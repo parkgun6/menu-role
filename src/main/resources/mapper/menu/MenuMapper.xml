@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.phiworks.menu.mapper.MenuMapper">
+    <insert id="insertMenu" parameterType="com.phiworks.menu.dto.MenuDTO">
+        INSERT INTO menus (
+            menu_id,
+            menu_name,
+            url,
+            parent_id,
+            depth
+        )
+        VALUES (
+            #{menuId},
+            #{menuName},
+            #{url},
+            #{parentId},
+            #{depth}
+        )
+    </insert>
+
+    <select id="getMenuList">
+        SELECT
+            A.menu_id,
+            A.menu_name,
+            A.url,
+            A.parent_id,
+            A.depth,
+            C.role_name
+        FROM
+        menus A
+            LEFT JOIN menu_access_role B ON A.menu_id = B.menu_id
+            LEFT JOIN role C ON B.role_id = C.role_id
+        WHERE
+            C.role_name IN
+            <foreach item="role" collection="roles" open="(" separator="," close=")">
+                #{role}
+            </foreach>
+    </select>
+
+    <select id="getMenuWithrole" resultType="com.phiworks.menu.dto.MenuDTO">
+        SELECT
+            A.menu_id,
+            A.menu_name,
+            A.url,
+            A.parent_id,
+            A.depth,
+            B.role_id,
+            C.role_name
+        FROM
+            menus A
+            LEFT JOIN menu_access_role B ON A.menu_id = B.menu_id
+            LEFT JOIN role C ON B.role_id = C.role_id
+        WHERE
+            A.menu_id = #{menuId}
+    </select>
+
+    <update id="updateMenu" parameterType="com.phiworks.menu.dto.MenuDTO">
+        UPDATE menus
+        SET
+            menu_name = #{menuName},
+            url = #{url},
+            parent_id = #{parentId},
+            depth = #{depth}
+        WHERE
+            menu_id = #{menuId}
+    </update>
+</mapper>

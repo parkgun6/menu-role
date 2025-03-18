@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="/logout" method="get">
+        <button>Logout</button>
+    </form>
+    <div th:each="menu: ${session.menuData}">
+        <p th:text="${menu}"></p>
+        <p th:text=${menu.menuName}></p>
+    </div>
+    <!--<div th:each="menu: ${menuList}">
+        <p th:text="${menu}"></p>
+        <p th:text=${menu.menuName}></p>
+    </div>-->
+    <div sec:authorize="hasRole('ANONYMOUS')">ROLE ANONYMOUS</div>
+    <div sec:authorize="hasRole('USER')">ROLE USER</div>
+    <div sec:authorize="hasRole('MANAGER')">ROLE MANAGER</div>
+    <div sec:authorize="hasRole('ADMIN')">ROLE ADMIN</div>
+
+    Authenticated username:
+    <div sec:authentication="name"/>
+    Authenticated user roles:
+    <!--<div sec:authentication="principal.authorities"/>-->
+    <div sec:authorize="isAuthenticated()">
+        Only Authenticated user can see this Text
+    </div>
+</body>

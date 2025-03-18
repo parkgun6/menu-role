@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.phiworks.menu.mapper.MenuRoleMapper">
+    <insert id="insertMenuAuth" parameterType="com.phiworks.menu.dto.MenuDTO">
+        INSERT INTO menu_access_role (
+            menu_id,
+            role_id
+        ) VALUES (
+            #{menuId},
+            #{role_id}
+        )
+    </insert>
+
+    <update id="updateMenuAuth" parameterType="com.phiworks.menu.dto.MenuDTO">
+        UPDATE menu_access_role
+        SET
+            role_id = #{role_id}
+        WHERE
+            menu_id = #{menuId}
+    </update>
+</mapper>
